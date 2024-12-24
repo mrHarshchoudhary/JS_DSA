@@ -6,98 +6,127 @@
   <title>Image Classification</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/ml5@0.12.2/dist/ml5.min.js"></script>
-  <style>
-    /* General Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <style>
+        /* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    body {
-      font-family: "Poppins", Arial, sans-serif;
-      background-color: #f0f8ff;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      padding: 20px;
-      text-align: center;
-    }
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  background: linear-gradient(135deg, #00bcd4, #8e44ad);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  overflow: hidden;
+  animation: fadeIn 2s ease-out;
+}
 
-    h1 {
-      font-size: 2.5rem;
-      color: #2c3e50;
-      margin-bottom: 20px;
-    }
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
 
-    input[type="file"] {
-      margin-top: 20px;
-      padding: 12px;
-      border: 2px dashed #3498db;
-      border-radius: 6px;
-      background-color: #ffffff;
-      cursor: pointer;
-      color: #3498db;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
+h1 {
+  font-size: 3rem;
+  color: #fff;
+  margin-bottom: 30px;
+  animation: slideIn 1.5s ease-out;
+}
 
-    input[type="file"]:hover {
-      background-color: #3498db;
-      color: #ffffff;
-    }
+@keyframes slideIn {
+  0% { transform: translateY(-50px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
 
-    img {
-      margin-top: 20px;
-      width: 200px;
-      height: auto;
-      border-radius: 8px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease;
-    }
+input[type="file"] {
+  margin-top: 30px;
+  padding: 15px;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
 
-    img:hover {
-      transform: scale(1.05);
-    }
+input[type="file"]:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
 
-    button {
-      margin-top: 20px;
-      padding: 12px 20px;
-      background: linear-gradient(135deg, #3498db, #2ecc71);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: bold;
-      transition: all 0.3s ease;
-    }
+img {
+  margin-top: 25px;
+  width: 250px;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.3);
+  transition: transform 0.4s ease, box-shadow 0.3s ease;
+  animation: scaleUp 0.6s ease-out;
+}
 
-    button:hover {
-      background: linear-gradient(135deg, #2ecc71, #3498db);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
+@keyframes scaleUp {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
 
-    .hidden {
-      display: none;
-    }
+img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
 
-    #myResult {
-      margin-top: 20px;
-      font-size: 1.2rem;
-      color: #555;
-      background: #eaf4fc;
-      padding: 10px 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      max-width: 80%;
-      word-wrap: break-word;
-    }
-  </style>
+button {
+  margin-top: 20px;
+  padding: 15px 30px;
+  background: linear-gradient(135deg, #ff6347, #ff8c00);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  background: linear-gradient(135deg, #ff8c00, #ff6347);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.hidden {
+  display: none;
+}
+
+#myResult {
+  margin-top: 20px;
+  font-size: 1.5rem;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 15px 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+  max-width: 80%;
+  word-wrap: break-word;
+  animation: slideInResult 1.5s ease-out;
+}
+
+@keyframes slideInResult {
+  0% { transform: translateY(50px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+    </style>
 </head>
 <body>
   <h1>Image Classification</h1>
@@ -106,64 +135,6 @@
   <button id="classifyButton" class="hidden">Classify Image</button>
   <div id="myResult" class="hidden"></div>
 
-  <script>
-  let classifier; // Model reference
-  let imgElement; // Image reference
-
-  // Load the model and set up event listeners
-  window.onload = function () {
-    classifier = ml5.imageClassifier("MobileNet", () => {
-      console.log("Model Loaded!");
-      document.getElementById("myResult").innerHTML = "Model Loaded! Select an image to classify.";
-    });
-
-    // Event listeners
-    document.getElementById("fileInput").addEventListener("change", handleFileSelect);
-    document.getElementById("classifyButton").addEventListener("click", classifyImage);
-  };
-
-  function handleFileSelect(event) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        imgElement = document.getElementById("myImage");
-        imgElement.src = e.target.result;
-        imgElement.classList.remove("hidden");
-        document.getElementById("classifyButton").classList.remove("hidden");
-        document.getElementById("myResult").classList.add("hidden");
-        console.log("Image loaded successfully.");
-      };
-      reader.readAsDataURL(file);
-    } else {
-      console.error("No file selected.");
-    }
-  }
-
-  function classifyImage() {
-    if (imgElement) {
-      document.getElementById("myResult").classList.remove("hidden");
-      document.getElementById("myResult").innerHTML = "Classifying...";
-      console.log("Classifying the image...");
-      classifier.classify(imgElement, (error, results) => {
-        if (error) {
-          console.error("Classification error:", error);
-          document.getElementById("myResult").innerHTML = "Error in classification. Please try again.";
-        } else {
-          console.log("Classification results:", results);
-          const label = results[0].label;
-          const confidence = (results[0].confidence * 100).toFixed(2);
-          document.getElementById("myResult").innerHTML = `
-            <strong>Label:</strong> ${label} <br>
-            <strong>Confidence:</strong> ${confidence}%
-          `;
-        }
-      });
-    } else {
-      alert("Please upload an image first.");
-    }
-  }
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
